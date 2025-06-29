@@ -15,11 +15,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
-sealed class RequestState<T> {
-    class Idle<T> : RequestState<T>()
-    class Loading<T> : RequestState<T>()
-    data class Success<T> (val data:T) : RequestState<T>()
-    data class Error<T> (val message:String): RequestState<T>()
+sealed class RequestState<out T> {
+    data object Idle : RequestState<Nothing>()
+    data object Loading : RequestState<Nothing>()
+    data class Success<out T> (val data:T) : RequestState<T>()
+    data class Error<out T> (val message:String): RequestState<T>()
 
     fun isIdle() = this is Idle
     fun isLoading() = this is Loading

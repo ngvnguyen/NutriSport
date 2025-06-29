@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 
 import com.nutrisport.auth.AuthScreen
 import com.nutrisport.home.HomeGraphScreen
+import com.nutrisport.profile.ProfileScreen
 import com.sf.nutrisport.navigation.Screen
 
 @Composable
@@ -41,8 +42,17 @@ fun SetupNavGraph(
                             inclusive = true
                         }
                     }
+                },
+                navigateToProfile = {
+                    navController.navigate(Screen.Profile)
                 }
             )
+        }
+
+        composable<Screen.Profile> {
+            ProfileScreen(navigateBack = {
+                navController.navigateUp()
+            })
         }
     }
     

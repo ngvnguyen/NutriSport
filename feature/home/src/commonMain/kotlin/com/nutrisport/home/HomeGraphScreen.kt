@@ -60,7 +60,8 @@ import rememberMessageBarState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeGraphScreen(
-    navigateToAuth : ()->Unit
+    navigateToAuth : ()->Unit,
+    navigateToProfile:()->Unit
 ) {
     val navController = rememberNavController()
 
@@ -105,7 +106,7 @@ fun HomeGraphScreen(
             .systemBarsPadding()
     ){
         CustomDrawer(
-            onProfileClick = {},
+            onProfileClick = navigateToProfile,
             onSignOutClick = {viewModel.signOut(
                 onSuccess = {
                     navigateToAuth()

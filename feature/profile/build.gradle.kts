@@ -25,7 +25,7 @@ kotlin {
 //        iosSimulatorArm64()
 //    ).forEach {
 //        it.binaries.framework {
-//            baseName = "navigation"
+//            baseName = "profile"
 //            isStatic = true
 //        }
 //    }
@@ -41,16 +41,16 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
 
-            implementation(libs.kotlinx.serialization)
-            implementation(libs.compose.navigation)
-
             implementation(libs.auth.kmp)
-            implementation(libs.firebase.app)
+            implementation(libs.auth.firebase.kmp)
 
-            implementation(projects.feature.auth)
-            implementation(projects.feature.home)
-            implementation(projects.feature.profile)
+            implementation(libs.messagebar.kmp)
+            implementation(libs.compose.navigation)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+
             implementation(projects.shared)
+            implementation(projects.data)
 
         }
         commonTest.dependencies {
@@ -60,7 +60,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.nutrisport.navigation"
+    namespace = "com.nutrisport.profile"
     compileSdk = 35
     defaultConfig {
         minSdk = 29
@@ -70,4 +70,3 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
-

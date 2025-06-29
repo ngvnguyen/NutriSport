@@ -48,6 +48,7 @@ kotlin {
             implementation(projects.feature.auth)
             implementation(projects.data)
             implementation(projects.feature.home)
+            implementation(projects.feature.profile)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
