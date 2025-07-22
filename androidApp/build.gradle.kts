@@ -52,6 +52,8 @@ dependencies {
     implementation(libs.auth.kmp)
     implementation(libs.auth.firebase.kmp)
     implementation(libs.firebase.app)
+    implementation(libs.firebase.storage)
+    implementation(libs.firebase.firestore)
 
     implementation(libs.koin.core)
     implementation(libs.koin.compose)
