@@ -30,6 +30,7 @@ import nutrisport.shared.generated.resources.unlock
 import nutrisport.shared.generated.resources.usa
 import nutrisport.shared.generated.resources.user
 import nutrisport.shared.generated.resources.vertical_menu
+import nutrisport.shared.generated.resources.weight
 
 object Resources{
     object Icon{
@@ -55,6 +56,7 @@ object Resources{
         val MapPin = Res.drawable.map_pin
         val VerticalMenu = Res.drawable.vertical_menu
         val Delete = Res.drawable.delete
+        val Weight = Res.drawable.weight
     }
     object Image{
         val ShoppingCart = Res.drawable.shopping_cart_image
