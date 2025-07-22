@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 data class ProfileScreenState(
+    val id:String="",
     val firstName:String ="",
     val lastName:String ="",
     val email:String ="",
@@ -39,6 +40,17 @@ class ProfileViewModel(
     var screenReady: RequestState<Unit> by mutableStateOf(RequestState.Loading)
     var screenState: ProfileScreenState by mutableStateOf(ProfileScreenState())
         private set
+
+    val isFormValid: Boolean
+        get() = with(screenState) {
+            firstName.length in 3..50 &&
+                    lastName.length in 3..50 &&
+                    city?.length in 3..50 &&
+                    postalCode!=null &&
+                    postalCode.toString().length in 3..8 &&
+                    address?.length in 3..50 &&
+                    phoneNumber?.number?.length in 5..30
+        }
     init {
         viewModelScope.launch {
             customer.collectLatest { data->
@@ -46,6 +58,7 @@ class ProfileViewModel(
                     val fetchedCustomer = data.getSuccessData()
                     screenState =
                         ProfileScreenState(
+                            id = fetchedCustomer.id,
                             firstName = fetchedCustomer.firstName,
                             lastName = fetchedCustomer.lastName,
                             email = fetchedCustomer.email,
@@ -94,7 +107,10 @@ class ProfileViewModel(
     }
     fun updateCountry(value: Country){
         screenState = screenState.copy(
-            country = value
+            country = value,
+            phoneNumber = screenState.phoneNumber?.copy(
+                dialCode = value.dialCode
+            )
         )
     }
 
@@ -105,5 +121,27 @@ class ProfileViewModel(
                 dialCode = screenState.country.dialCode
             )
         )
+    }
+
+    fun updateCustomer(
+        onSuccess:()->Unit,
+        onError:(String)->Unit
+    ){
+        viewModelScope.launch {
+            customerRepository.updateCustomer(
+                Customer(
+                    id = screenState.id,
+                    firstName = screenState.firstName,
+                    lastName = screenState.lastName,
+                    email = screenState.email,
+                    city = screenState.city,
+                    postalCode = screenState.postalCode,
+                    address = screenState.address,
+                    phoneNumber = screenState.phoneNumber
+                ),
+                onSuccess = onSuccess,
+                onError = onError
+            )
+        }
     }
 }

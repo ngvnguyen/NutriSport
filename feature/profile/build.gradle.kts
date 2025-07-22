@@ -19,16 +19,10 @@ kotlin {
         }
     }
 
-//    listOf(
-//        iosX64(),
-//        iosArm64(),
-//        iosSimulatorArm64()
-//    ).forEach {
-//        it.binaries.framework {
-//            baseName = "profile"
-//            isStatic = true
-//        }
-//    }
+    iosArm64().binaries.framework {
+        baseName = "profile"
+        isStatic = true
+    }
 
     sourceSets {
         commonMain.dependencies {
