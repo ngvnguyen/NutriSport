@@ -1,10 +1,11 @@
 package com.sf.nutrisport
 
 import android.app.Application
-import com.google.firebase.Firebase
-import com.google.firebase.FirebaseApp
-import com.google.firebase.initialize
+
 import com.nutrisport.di.initializeKoin
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.FirebaseApp
+import dev.gitlive.firebase.initialize
 import org.koin.android.ext.koin.androidContext
 
 class App:Application() {
@@ -13,6 +14,6 @@ class App:Application() {
         initializeKoin(config={
             androidContext(this@App)
         })
-        FirebaseApp.initializeApp(this)
+        Firebase.initialize(this)
     }
 }
