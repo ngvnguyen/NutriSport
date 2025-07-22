@@ -19,16 +19,10 @@ kotlin {
         }
     }
 
-//    listOf(
-//        iosX64(),
-//        iosArm64(),
-//        iosSimulatorArm64()
-//    ).forEach {
-//        it.binaries.framework {
-//            baseName = "navigation"
-//            isStatic = true
-//        }
-//    }
+    iosArm64().binaries.framework {
+        baseName = "navigation"
+        isStatic = true
+    }
 
     sourceSets {
         commonMain.dependencies {
@@ -49,7 +43,11 @@ kotlin {
 
             implementation(projects.feature.auth)
             implementation(projects.feature.home)
+            implementation(projects.feature.details)
+            implementation(projects.feature.category.categorySearch)
             implementation(projects.feature.profile)
+            implementation(projects.feature.adminPanel)
+            implementation(projects.feature.adminPanel.manageProduct)
             implementation(projects.shared)
 
         }
