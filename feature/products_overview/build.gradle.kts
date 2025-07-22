@@ -13,14 +13,14 @@ kotlin {
         compilations.all {
             compileTaskProvider.configure {
                 compilerOptions {
-                    jvmTarget.set(JvmTarget.JVM_1_8)
+                    jvmTarget.set(JvmTarget.JVM_17)
                 }
             }
         }
     }
 
     iosArm64().binaries.framework {
-        baseName = "home"
+        baseName = "products_overview"
         isStatic = true
     }
 
@@ -35,20 +35,18 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
 
-            implementation(libs.auth.kmp)
-            implementation(libs.auth.firebase.kmp)
-
             implementation(libs.messagebar.kmp)
-            implementation(libs.compose.navigation)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
 
+            implementation(libs.coil3)
+            implementation(libs.coil3.compose)
+            implementation(libs.coil3.compose.core)
+            implementation(libs.coil3.network.ktor)
+
             implementation(projects.shared)
             implementation(projects.data)
-            implementation(projects.feature.productsOverview)
-            implementation(projects.feature.cart)
-            implementation(projects.feature.category)
-            implementation(projects.feature.category.categorySearch)
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -57,7 +55,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.nutrisport.home"
+    namespace = "com.nutrisport.products_overview"
     compileSdk = 35
     defaultConfig {
         minSdk = 29

@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,12 +39,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.nutrisport.cart.CartScreen
+import com.nutrisport.category.CategoriesScreen
+import com.nutrisport.category_search.CategorySearchScreen
 import com.nutrisport.home.component.BottomBar
 import com.nutrisport.home.component.CustomDrawer
 import com.nutrisport.home.domain.BottomBarDestination
 import com.nutrisport.home.domain.CustomDrawerState
 import com.nutrisport.home.domain.isOpened
 import com.nutrisport.home.domain.opposite
+import com.nutrisport.products_overview.ProductsOverviewScreen
 import com.sf.nutrisport.FontSize
 import com.sf.nutrisport.IconPrimary
 import com.sf.nutrisport.Resources
@@ -51,7 +57,9 @@ import com.sf.nutrisport.Surface
 import com.sf.nutrisport.SurfaceLighter
 import com.sf.nutrisport.TextPrimary
 import com.sf.nutrisport.bebasNeueFont
+import com.sf.nutrisport.domain.ProductCategory
 import com.sf.nutrisport.navigation.Screen
+import com.sf.nutrisport.navigation.Screen.CategorySearch
 import com.sf.nutrisport.util.getScreenWidth
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -61,7 +69,10 @@ import rememberMessageBarState
 @Composable
 fun HomeGraphScreen(
     navigateToAuth : ()->Unit,
-    navigateToProfile:()->Unit
+    navigateToProfile:()->Unit,
+    navigateToAdminPanel:()->Unit,
+    navigateToDetails:(String)->Unit,
+    navigateToCategorySearchScreen:(String)->Unit
 ) {
     val navController = rememberNavController()
 
@@ -99,6 +110,7 @@ fun HomeGraphScreen(
     val messageBarState = rememberMessageBarState()
 
     val viewModel = koinViewModel<HomeGraphViewModel>()
+    val customer by viewModel.customer.collectAsState()
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -106,6 +118,7 @@ fun HomeGraphScreen(
             .systemBarsPadding()
     ){
         CustomDrawer(
+            customer = customer,
             onProfileClick = navigateToProfile,
             onSignOutClick = {viewModel.signOut(
                 onSuccess = {
@@ -116,7 +129,7 @@ fun HomeGraphScreen(
                 }
             )},
             onContactUsClick = {},
-            onAdminPanelClick = {},
+            onAdminPanelClick = navigateToAdminPanel,
 
         )
         Box(
@@ -190,17 +203,30 @@ fun HomeGraphScreen(
                         modifier = Modifier.fillMaxSize()
                     ){
                         NavHost(
+                            modifier = Modifier.weight(1f),
                             navController = navController,
-                            startDestination = Screen.ProductsOverview,
-                            modifier = Modifier.weight(1f)
+                            startDestination = Screen.ProductsOverview
                         ){
-                            composable<Screen.ProductsOverview> { }
-                            composable<Screen.Cart> { }
-                            composable<Screen.Categories> {  }
+                            composable<Screen.ProductsOverview> {
+                                ProductsOverviewScreen(
+                                    navigateToDetails = navigateToDetails
+                                )
+                            }
+                            composable<Screen.Cart> {
+                                CartScreen()
+                            }
+                            composable<Screen.Categories> {
+                                CategoriesScreen(
+                                    navigateToCategoriesSearch = {categoryName->
+                                        navigateToCategorySearchScreen(categoryName)
+                                    }
+                                )
+                            }
+
                         }
-                        Spacer(modifier = Modifier.weight(1f))
                         Box(modifier = Modifier.padding(12.dp)){
                             BottomBar(
+                                customer = customer,
                                 selected = selectedDestination ,
                                 onSelect ={ destination->
                                     navController.navigate(destination.screen){
