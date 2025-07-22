@@ -13,7 +13,7 @@ kotlin {
         compilations.all {
             compileTaskProvider.configure {
                 compilerOptions {
-                    jvmTarget.set(JvmTarget.JVM_1_8)
+                    jvmTarget.set(JvmTarget.JVM_17)
                 }
             }
         }
@@ -25,15 +25,14 @@ kotlin {
     }
 
     sourceSets {
-
-
-        val commonMain by getting
-        val iosArm64Main by getting
-        val iosMain by creating {
-            dependsOn(commonMain)
-            iosArm64Main.dependsOn(this)
+        androidMain.dependencies{
+            implementation(libs.ktor.android.client)
         }
-        
+
+        iosMain.dependencies {
+            implementation(libs.ktor.darwin.client)
+        }
+//
         commonMain.dependencies{
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -49,6 +48,10 @@ kotlin {
             implementation(libs.auth.kmp)
             implementation(libs.firebase.app)
 
+            implementation(libs.coil3)
+            implementation(libs.coil3.compose)
+            implementation(libs.coil3.compose.core)
+            implementation(libs.coil3.network.ktor)
             implementation(libs.koin.compose)
 
             api(libs.kmp.notifier)

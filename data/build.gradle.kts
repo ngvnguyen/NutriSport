@@ -19,18 +19,13 @@ kotlin {
         }
     }
 
-//    listOf(
-//        iosX64(),
-//        iosArm64(),
-//        iosSimulatorArm64()
-//    ).forEach {
-//        it.binaries.framework {
-//            baseName = "data"
-//            isStatic = true
-//        }
-//    }
+    iosArm64().binaries.framework {
+        baseName = "data"
+        isStatic = true
+    }
 
     sourceSets {
+
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -42,7 +37,9 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
 
             implementation(libs.auth.firebase.kmp)
+            implementation(libs.firebase.app)
             implementation(libs.firebase.firestore)
+            implementation(libs.firebase.storage)
 
             implementation(projects.shared)
 
